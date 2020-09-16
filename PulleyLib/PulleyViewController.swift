@@ -762,9 +762,6 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
         super.viewDidAppear(animated)
         //This is a bug ENG-990 for the KH app
         //setNeedsSupportedDrawerPositionsUpdate()
-        if #available(iOS 14, *) {
-            initViewLogic()
-        }
     }
     
     override open func viewDidLayoutSubviews() {
@@ -773,13 +770,17 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
         // Make sure our view controller views are subviews of the right view (Resolves #21 issue with changing the presentation context)
         
         // May be nil during initial layout
-        if #available(iOS 14, *) {}
-        else {
-            initViewLogic()
+        if #available(iOS 14, *) {
+            // Hack to fix iOS 14
+            DispatchQueue.main.async { [weak self] in
+                self?.viewLogic()
+            }
+        } else {
+            viewLogic()
         }
     }
     
-    private func initViewLogic() {
+    private func viewLogic() {
         if let primary = primaryContentViewController
         {
             if primary.view.superview != nil && primary.view.superview != primaryContentContainer
