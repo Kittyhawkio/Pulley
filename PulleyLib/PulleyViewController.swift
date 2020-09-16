@@ -762,6 +762,10 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
         super.viewDidAppear(animated)
         //This is a bug ENG-990 for the KH app
         //setNeedsSupportedDrawerPositionsUpdate()
+        if #available(iOS 14, *) {
+            // Hack to fix iOS 14
+            self.viewLogic()
+        }
     }
     
     override open func viewDidLayoutSubviews() {
@@ -772,9 +776,6 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
         // May be nil during initial layout
         if #available(iOS 14, *) {
             // Hack to fix iOS 14
-            DispatchQueue.main.async { [weak self] in
-                self?.viewLogic()
-            }
         } else {
             viewLogic()
         }
@@ -1423,7 +1424,13 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
                 self?.setDrawerPosition(position: currentPosition, animated: false)
             }
         }
-        
+
+        if #available(iOS 14, *) {
+            // Hack to fix iOS 14
+            DispatchQueue.main.async {
+                self.viewLogic()
+            }
+        }
     }
     
     // MARK: PulleyDrawerViewControllerDelegate implementation for nested Pulley view controllers in drawers. Implemented here, rather than an extension because overriding extensions in subclasses isn't good practice. Some developers want to subclass Pulley and customize these behaviors, so we'll move them here.
