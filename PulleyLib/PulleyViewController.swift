@@ -911,7 +911,7 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
         }
         
         let displayModeForCurrentLayout: PulleyDisplayMode = displayMode != .automatic ? displayMode : automaticDisplayMode
-        
+      
         currentDisplayMode = displayModeForCurrentLayout
 
         if displayModeForCurrentLayout == .drawer
@@ -1015,7 +1015,7 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
                 yOrigin = (panelCornerPlacement == .bottomLeft || panelCornerPlacement == .bottomRight) ? (panelInsets.top + safeAreaTopInset) : (panelInsets.top + safeAreaTopInset + bounceOverflowMargin)
                 
             }
-            
+          
             if supportedPositions.contains(.open)
             {
                 // Layout scrollview
