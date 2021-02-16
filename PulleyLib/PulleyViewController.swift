@@ -679,11 +679,11 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
     /// The currently rendered display mode for Pulley. This will match displayMode unless you have it set to 'automatic'. This will provide the 'actual' display mode (never automatic).
     public fileprivate(set) var currentDisplayMode: PulleyDisplayMode = .automatic {
         didSet {
+            
             if oldValue != currentDisplayMode
             {
                 if #available(iOS 14, *) {
                 } else {
-                    
                     if self.isViewLoaded
                     {
                         self.view.setNeedsLayout()
@@ -899,19 +899,9 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
         let safeAreaBottomInset = pulleySafeAreaInsets.bottom
         let safeAreaLeftInset = pulleySafeAreaInsets.left
         let safeAreaRightInset = pulleySafeAreaInsets.right
-        
-        var automaticDisplayMode: PulleyDisplayMode = .drawer
-        if (self.view.bounds.width >= 600.0 ) {
-            switch self.traitCollection.horizontalSizeClass {
-            case .compact:
-                automaticDisplayMode = .compact
-            default:
-                automaticDisplayMode = .panel
-            }
-        }
-        
-        let displayModeForCurrentLayout: PulleyDisplayMode = displayMode != .automatic ? displayMode : automaticDisplayMode
-        
+
+        let displayModeForCurrentLayout: PulleyDisplayMode = displayMode != .automatic ? displayMode : ((self.view.bounds.width >= 600.0 || self.traitCollection.horizontalSizeClass == .regular) ? .panel : .drawer)
+
         currentDisplayMode = displayModeForCurrentLayout
 
         if displayModeForCurrentLayout == .drawer
@@ -994,28 +984,13 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
                 collapsedHeight = drawerVCCompliant.collapsedDrawerHeight?(bottomSafeArea: safeAreaBottomInset) ?? kPulleyDefaultCollapsedHeight
                 partialRevealHeight = drawerVCCompliant.partialRevealDrawerHeight?(bottomSafeArea: safeAreaBottomInset) ?? kPulleyDefaultPartialRevealHeight
             }
-            
-            var lowestStop: CGFloat = 0
-            var xOrigin: CGFloat = 0
-            var yOrigin: CGFloat = 0
-            let width = displayModeForCurrentLayout == .compact ? compactWidth : panelWidth
-            
-            if (displayModeForCurrentLayout == .compact)
-            {
-                lowestStop = [(self.view.bounds.size.height - compactInsets.bottom - safeAreaTopInset), collapsedHeight, partialRevealHeight].min() ?? 0
-                xOrigin = (compactCornerPlacement == .bottomLeft) ? (safeAreaLeftInset + compactInsets.left) : (self.view.bounds.maxX - (safeAreaRightInset + compactInsets.right) - compactWidth)
-                
-                yOrigin = (compactInsets.top + safeAreaTopInset)
-            }
-            else
-            {
-                lowestStop = [(self.view.bounds.size.height - panelInsets.bottom - safeAreaTopInset), collapsedHeight, partialRevealHeight].min() ?? 0
-                xOrigin = (panelCornerPlacement == .bottomLeft || panelCornerPlacement == .topLeft) ? (safeAreaLeftInset + panelInsets.left) : (self.view.bounds.maxX - (safeAreaRightInset + panelInsets.right) - panelWidth)
-                
-                yOrigin = (panelCornerPlacement == .bottomLeft || panelCornerPlacement == .bottomRight) ? (panelInsets.top + safeAreaTopInset) : (panelInsets.top + safeAreaTopInset + bounceOverflowMargin)
-                
-            }
-            
+
+            let lowestStop = [(self.view.bounds.size.height - panelInsets.bottom - safeAreaTopInset), collapsedHeight, partialRevealHeight].min() ?? 0
+
+            let xOrigin = (panelCornerPlacement == .bottomLeft || panelCornerPlacement == .topLeft) ? (safeAreaLeftInset + panelInsets.left) : (self.view.bounds.maxX - (safeAreaRightInset + panelInsets.right) - panelWidth)
+
+            let yOrigin = (panelCornerPlacement == .bottomLeft || panelCornerPlacement == .bottomRight) ? (panelInsets.top + safeAreaTopInset) : (panelInsets.top + safeAreaTopInset + bounceOverflowMargin)
+
             if supportedPositions.contains(.open)
             {
                 // Layout scrollview
@@ -1031,23 +1006,12 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
             syncDrawerContentViewSizeToMatchScrollPositionForSideDisplayMode()
 
             drawerScrollView.contentSize = CGSize(width: drawerScrollView.bounds.width, height: self.view.bounds.height + (self.view.bounds.height - lowestStop))
-            
-            if (displayModeForCurrentLayout == .compact)
-            {
-                switch compactCornerPlacement {
-                case .bottomLeft, .bottomRight:
-                    drawerScrollView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                }
-            }
-            else
-            {
-                switch panelCornerPlacement {
-                case .topLeft, .topRight:
-                    drawerScrollView.transform = CGAffineTransform(scaleX: 1.0, y: -1.0)
-                case .bottomLeft, .bottomRight:
-                    drawerScrollView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                }
-                
+
+            switch panelCornerPlacement {
+            case .topLeft, .topRight:
+                drawerScrollView.transform = CGAffineTransform(scaleX: 1.0, y: -1.0)
+            case .bottomLeft, .bottomRight:
+                drawerScrollView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             }
 
             backgroundDimmingView.isHidden = true
