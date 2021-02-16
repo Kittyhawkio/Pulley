@@ -867,10 +867,7 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
         super.viewDidLayoutSubviews()
         
         // Make sure our view controller views are subviews of the right view (Resolves #21 issue with changing the presentation context)
-        if #available(iOS 14, *) {}
-        else {
-            viewLogic()
-        }
+       viewLogic()
     }
     
     private func viewLogic() {
