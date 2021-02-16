@@ -857,7 +857,7 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         //This is a bug ENG-990 for the KH app
-        //setNeedsSupportedDrawerPositionsUpdate()
+        setNeedsSupportedDrawerPositionsUpdate()
     }
     
     override open func viewDidLayoutSubviews() {
