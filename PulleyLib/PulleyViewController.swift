@@ -994,13 +994,13 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
             if supportedPositions.contains(.open)
             {
                 // Layout scrollview
-                drawerScrollView.frame = CGRect(x: xOrigin, y: yOrigin, width: width, height: heightOfOpenDrawer)
+                drawerScrollView.frame = CGRect(x: xOrigin, y: yOrigin, width: panelWidth, height: heightOfOpenDrawer)
             }
             else
             {
                 // Layout scrollview
                 let adjustedTopInset: CGFloat = supportedPositions.contains(.partiallyRevealed) ? partialRevealHeight : collapsedHeight
-                drawerScrollView.frame = CGRect(x: xOrigin, y: yOrigin, width: width, height: adjustedTopInset)
+                drawerScrollView.frame = CGRect(x: xOrigin, y: yOrigin, width: panelWidth, height: adjustedTopInset)
             }
 
             syncDrawerContentViewSizeToMatchScrollPositionForSideDisplayMode()
