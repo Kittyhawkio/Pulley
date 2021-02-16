@@ -587,11 +587,8 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
     /// The currently rendered display mode for Pulley. This will match displayMode unless you have it set to 'automatic'. This will provide the 'actual' display mode (never automatic).
     public fileprivate(set) var currentDisplayMode: PulleyDisplayMode = .automatic {
         didSet {
-            if #available(iOS 14, *) {}
-            else {
-                if self.isViewLoaded {
-                    self.view.setNeedsLayout()
-                }
+            if self.isViewLoaded {
+                self.view.setNeedsLayout()
             }
             
             if oldValue != currentDisplayMode
@@ -764,13 +761,19 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
         super.viewDidAppear(animated)
         //This is a bug ENG-990 for the KH app
         //setNeedsSupportedDrawerPositionsUpdate()
+        if #available(iOS 14, *) {
+            viewLogic()
+        }
     }
     
     override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         // Make sure our view controller views are subviews of the right view (Resolves #21 issue with changing the presentation context)
-        viewLogic()
+        if #available(iOS 14, *) {}
+        else {
+            viewLogic()
+        }
     }
     
     private func viewLogic() {
