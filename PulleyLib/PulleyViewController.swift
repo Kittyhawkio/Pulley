@@ -857,14 +857,20 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         //This is a bug ENG-990 for the KH app
-        setNeedsSupportedDrawerPositionsUpdate()
+        //setNeedsSupportedDrawerPositionsUpdate()
+        if #available(iOS 14, *) {
+            viewLogic()
+        }
     }
     
     override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         // Make sure our view controller views are subviews of the right view (Resolves #21 issue with changing the presentation context)
-        viewLogic()
+        if #available(iOS 14, *) {}
+        else {
+            viewLogic()
+        }
     }
     
     private func viewLogic() {
