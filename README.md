@@ -1,9 +1,23 @@
 # Pulley
+
+<p align="center">
+<a href="https://github.com/52inc/Pulley/actions?query=workflow%3Adeploy_to_cocoapods"><img src="https://github.com/52inc/Pulley/workflows/deploy_to_cocoapods/badge.svg"></a>
+<a href="https://cocoapods.org/pods/Pulley"><img src="https://img.shields.io/cocoapods/v/Pulley.svg?style=flat"></a>
+<a href="https://github.com/Carthage/Carthage/"><img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"></a>
+<a href="https://swift.org/package-manager/"><img src="https://img.shields.io/badge/SPM-supported-DE5C43.svg?style=flat"></a>
+<br />
+<a href="https://raw.githubusercontent.com/52inc/Pulley/master/LICENSE"><img src="https://img.shields.io/cocoapods/l/Pulley.svg?style=flat"></a>
+<a href="https://github.com/52inc/Pulley/"><img src="https://img.shields.io/cocoapods/p/Pulley.svg?style=flat"></a>
+</p>
+
 A library to imitate the drawer in Maps for iOS 10/11. The master branch follows the latest currently released version of Swift. If you need an older version of Swift, you can specify it's version (e.g. 1.0.x) in your Podfile or use the code on the branch for that version. Older branches are unsupported.
 
 ### Update / Migration Info
 
-**ATTENTION:** 
+**ATTENTION:**
+Pulley 2.9.0 has new properties to support a new displayMode. The base functionality should work without any significant changes. The biggest change being the new displayMode of `.compact` to replicate Apple Maps Behavior on the iPhone SE size class devices. This is an exact replica of the behavior of the Apple Maps drawer, therefor when the `currentDisplayMode` of the `PulleyViewController` is `.compact` then the only `supportedDrawerPositions` for the view controller when in `.compact` mode are `.open`, `.closed`, and `.collapsed`. This mode also has new @IBInspectable properties, `compactInsets` and `compactWidth`. This mode behaves in a very similar way to `.panel` mode. See the pull request [here](https://github.com/52inc/Pulley/pull/347) for the motivation behind this feature. Also in this release, `setDrawerContentViewController(controller: UIViewController, position: PulleyPosition? = nil, animated: Bool = true, completion: PulleyAnimationCompletionBlock?)` has a new optional parameter `position` to set a new drawer position the drawer when a new `DrawerContentViewController` is set. See [this](https://github.com/52inc/Pulley/pull/349) pull request for the motivation behind this feature.
+
+
 Pulley 2.5.0 had significant renaming changes to support new features. Although property names have changed, the functionality should work without any significant changes (aside from renaming). See [this thread](https://github.com/52inc/Pulley/issues/252) for additional information.
 
 
@@ -27,6 +41,10 @@ Pulley is an easy to use drawer library meant to imitate the drawer in iOS 10/11
 
 ##### Installation with Carthage
 `github "52inc/Pulley"`
+Please read this [issue](https://github.com/52inc/Pulley/issues/331#issue-435421067) regarding setup if using Carthage.
+
+##### Installation with Swift Package Manager
+Follow the [developer documentation](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app) for Swift Package Manager (versions 2.8.x)
 
 ##### Manual Installation
 Simply copy the files in the PulleyLib folder into your project.
@@ -138,3 +156,10 @@ if let drawer = self.parentViewController as? PulleyViewController
 15. By default, Pulley will only use the 'bottom' display mode (to preserve backwards compatibility). If you want to use the iPad / iPhone landscape modes, you can use 'panel' for the display mode. If you want it to automatically switch like Maps.app on iOS, you can set the display mode to 'automatic'.
 16. You can apply a custom mask to the Pulley drawer by setting your drawerViewController's view.layer.mask property to a CAShapeLayer. That mask will also be applied to the drawer in Pulley.
 17. You can specify which corner you'd like the panel to display in (when in 'panel' displayMode) by using the 'panelCornerPlacement` property.
+
+## Requirements
+
+- iOS 9.0+
+- Swift 4.0+
+
+
