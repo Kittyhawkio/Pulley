@@ -812,7 +812,7 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
         {
             // Bottom inset for safe area / bottomLayoutGuide
             if #available(iOS 11, *) {
-                self.drawerScrollView.contentInsetAdjustmentBehavior = .scrollableAxes
+                self.drawerScrollView.contentInsetAdjustmentBehavior = .never
             } else {
                 self.automaticallyAdjustsScrollViewInsets = false
                 self.drawerScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: self.bottomLayoutGuide.length, right: 0)
@@ -872,7 +872,7 @@ open class PulleyViewController: UIViewController, PulleyDrawerViewControllerDel
         {
             // Bottom inset for safe area / bottomLayoutGuide
             if #available(iOS 11, *) {
-                self.drawerScrollView.contentInsetAdjustmentBehavior = .scrollableAxes
+                self.drawerScrollView.contentInsetAdjustmentBehavior = .never
             } else {
                 self.automaticallyAdjustsScrollViewInsets = false
                 self.drawerScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0.0, right: 0)
